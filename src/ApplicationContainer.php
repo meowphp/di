@@ -93,7 +93,7 @@ class ApplicationContainer
             // todo php stan returning this as an error check if it bug in php stan
             /** @var \ReflectionNamedType|null $reflectionNamedType */
             $reflectionNamedType = $parameter->getType();
-            
+
             if ($reflectionNamedType && !$reflectionNamedType->isBuiltin()) {
                 /** @var class-string<object> $typeName */
                 $typeName = $reflectionNamedType->getName();
