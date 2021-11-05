@@ -33,7 +33,7 @@ class ApplicationContainer
      *
      * @param string $interface
      * @param array $parameters
-     * @return mixed|object
+     * @return object
      * @throws \Exception
      */
     public function get(string $interface, array $parameters = []): object
@@ -48,12 +48,12 @@ class ApplicationContainer
     /**
      * Returns new instance of class with resolved dependencies
      *
-     * @param string|null $object
+     * @param class-string<object>|object $object
      * @param array $parameters
      * @return object
      * @throws \ReflectionException
      */
-    public function resolve(?string $object = null, array $parameters = []): object
+    public function resolve(string|object $object, array $parameters = []): object
     {
         if ($object instanceof \Closure) {
             return $object($this, $parameters);
@@ -70,6 +70,7 @@ class ApplicationContainer
             return $reflector->newInstance();
         }
 
+        /** @var array<\ReflectionParameter> $parameters */
         $parameters = $constructor->getParameters();
         $dependencies = $this->getDependencies($parameters);
 
