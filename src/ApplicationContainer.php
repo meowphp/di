@@ -33,7 +33,7 @@ class ApplicationContainer
      *
      * @param string $interface
      * @param array $parameters
-     * @return mixed|object
+     * @return object
      * @throws \Exception
      */
     public function get(string $interface, array $parameters = []): object
@@ -48,12 +48,12 @@ class ApplicationContainer
     /**
      * Returns new instance of class with resolved dependencies
      *
-     * @param string|null $object
+     * @param class-string<object>|object $object
      * @param array $parameters
      * @return object
      * @throws \ReflectionException
      */
-    public function resolve(?string $object = null, array $parameters = []): object
+    public function resolve(string|object $object, array $parameters = []): object
     {
         if ($object instanceof \Closure) {
             return $object($this, $parameters);
@@ -70,6 +70,7 @@ class ApplicationContainer
             return $reflector->newInstance();
         }
 
+        /** @var array<\ReflectionParameter> $parameters */
         $parameters = $constructor->getParameters();
         $dependencies = $this->getDependencies($parameters);
 
@@ -88,10 +89,18 @@ class ApplicationContainer
         $dependencies = [];
 
         foreach ($parameters as $parameter) {
-            //$dependency = $parameter->getClass();
-            $dependency = $parameter->getType() && !$parameter->getType()->isBuiltin()
-                ? new \ReflectionClass($parameter->getType()->getName())
-                : null;
+            // $dependency = $parameter->getClass();
+            // todo php stan returning this as an error check if it bug in php stan
+            /** @var \ReflectionNamedType|null $reflectionNamedType */
+            $reflectionNamedType = $parameter->getType();
+
+            if ($reflectionNamedType && !$reflectionNamedType->isBuiltin()) {
+                /** @var class-string<object> $typeName */
+                $typeName = $reflectionNamedType->getName();
+                $dependency = new \ReflectionClass($typeName);
+            } else {
+                $dependency = null;
+            }
 
             if ($dependency == null) {
                 if ($parameter->isDefaultValueAvailable()) {
