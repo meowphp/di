@@ -89,10 +89,18 @@ class ApplicationContainer
         $dependencies = [];
 
         foreach ($parameters as $parameter) {
-            //$dependency = $parameter->getClass();
-            $dependency = $parameter->getType() && !$parameter->getType()->isBuiltin()
-                ? new \ReflectionClass($parameter->getType()->getName())
-                : null;
+            // $dependency = $parameter->getClass();
+            // todo php stan returning this as an error check if it bug in php stan
+            /** @var \ReflectionNamedType|null $reflectionNamedType */
+            $reflectionNamedType = $parameter->getType();
+            
+            if ($reflectionNamedType && !$reflectionNamedType->isBuiltin()) {
+                /** @var class-string<object> $typeName */
+                $typeName = $reflectionNamedType->getName();
+                $dependency = new \ReflectionClass($typeName);
+            } else {
+                $dependency = null;
+            }
 
             if ($dependency == null) {
                 if ($parameter->isDefaultValueAvailable()) {
