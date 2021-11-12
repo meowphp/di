@@ -1,6 +1,7 @@
 {
     "name": "meow/di",
     "description": "Dependency injection container",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Meow\\DI\\": "src/"
