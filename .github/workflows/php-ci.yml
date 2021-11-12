@@ -35,4 +35,11 @@ jobs:
         with:
           composer_script: 'stan'
 
-
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Composer run action PHPStan
+        uses: MayMeowHQ/composer-run-action@v4
+        with:
+          composer_script: 'test'
