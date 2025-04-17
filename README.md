@@ -1,8 +1,10 @@
 # di
 
+__namespace:__ `meow\di`
+
 Dependency injection container for PHP
 
-__namespace:__ `meow\di`
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/D1D5DMOTA)
 
 ## Installation
 
