@@ -48,12 +48,12 @@ class ApplicationContainer implements ContainerInterface
     /**
      * Returns new instance of class with resolved dependencies
      *
-     * @param class-string<object>|null $object
+     * @param class-string<object>|object $object
      * @param array $parameters
      * @return object
      * @throws \ReflectionException
      */
-    public function resolve(?string $object = null, array $parameters = []): object
+    public function resolve(string|object $object, array $parameters = []): object
     {
         if ($object instanceof \Closure) {
             return $object($this, $parameters);
