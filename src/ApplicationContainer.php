@@ -5,7 +5,7 @@ namespace Meow\DI;
 /**
  * Dependency injection container
  */
-class ApplicationContainer
+class ApplicationContainer implements ContainerInterface
 {
     /**
      * @var array<object>|array
