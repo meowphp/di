@@ -5,7 +5,7 @@ namespace Meow\DI;
 /**
  * Dependency injection container
  */
-class ApplicationContainer
+class ApplicationContainer implements ContainerInterface
 {
     /**
      * @var array<object>|array
@@ -48,12 +48,12 @@ class ApplicationContainer
     /**
      * Returns new instance of class with resolved dependencies
      *
-     * @param class-string<object>|object $object
+     * @param class-string<object>|null $object
      * @param array $parameters
      * @return object
      * @throws \ReflectionException
      */
-    public function resolve(string|object $object, array $parameters = []): object
+    public function resolve(?string $object = null, array $parameters = []): object
     {
         if ($object instanceof \Closure) {
             return $object($this, $parameters);
